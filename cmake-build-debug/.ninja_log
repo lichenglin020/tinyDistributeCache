@@ -1,0 +1,6 @@
+# ninja log v5
+1245	1344	1650972187744346485	tinyDistributeCache	27b62fb7ba279981
+3	52	1650972055683571584	CMakeFiles/tinyDistributeCache.dir/service.cpp.o	61bb57d7676399fd
+2	757	1650972090090259746	CMakeFiles/tinyDistributeCache.dir/main.cpp.o	b18ce1f154f2008c
+1	133	1650973930855270445	build.ninja	4d8b1425bc32080b
+4	1245	1650972187639740642	CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o	136b0a0968432213

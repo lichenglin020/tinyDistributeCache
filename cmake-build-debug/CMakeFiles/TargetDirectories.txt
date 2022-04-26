@@ -1,0 +1,3 @@
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/tinyDistributeCache.dir

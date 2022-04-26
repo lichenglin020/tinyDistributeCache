@@ -1,0 +1,14 @@
+//
+// Created by Chenglinli on 2022/4/26.
+//
+
+#ifndef TINYDISTRIBUTECACHE_THREADPOOL_H
+#define TINYDISTRIBUTECACHE_THREADPOOL_H
+
+
+class ThreadPool {
+
+};
+
+
+#endif //TINYDISTRIBUTECACHE_THREADPOOL_H
