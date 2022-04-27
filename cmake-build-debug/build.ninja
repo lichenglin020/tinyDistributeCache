@@ -42,6 +42,48 @@ include CMakeFiles/rules.ninja
 cmake_ninja_workdir = /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/
 
 #############################################
+# Utility command for install/local
+
+build CMakeFiles/install/local.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install/local: phony CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build CMakeFiles/install/strip.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build install/strip: phony CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build CMakeFiles/install.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build install: phony CMakeFiles/install.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
+
+
+#############################################
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
@@ -70,43 +112,56 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 #############################################
 # Order-only phony target for tinyDistributeCache
 
-build cmake_object_order_depends_target_tinyDistributeCache: phony || CMakeFiles/tinyDistributeCache.dir
+build cmake_object_order_depends_target_tinyDistributeCache: phony || cmake_object_order_depends_target_gtest
 
 build CMakeFiles/tinyDistributeCache.dir/main.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/main.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/main.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir
 
 build CMakeFiles/tinyDistributeCache.dir/service.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/service.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/service.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir
 
 build CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/common/ConsistentHash.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/common
 
 build CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/cache/LRU.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/cache
 
 build CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/cache/ThreadPool.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/cache
 
 build CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/cache/Task.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/cache
+
+build CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/test/test_thread_pool.cpp || cmake_object_order_depends_target_tinyDistributeCache
+  DEP_FILE = CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
+  OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
+  OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/test
 
 
 # =============================================================================
@@ -116,8 +171,9 @@ build CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o: CXX_COMPILER__tinyDis
 #############################################
 # Link the executable tinyDistributeCache
 
-build tinyDistributeCache: CXX_EXECUTABLE_LINKER__tinyDistributeCache_Debug CMakeFiles/tinyDistributeCache.dir/main.cpp.o CMakeFiles/tinyDistributeCache.dir/service.cpp.o CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o
+build tinyDistributeCache: CXX_EXECUTABLE_LINKER__tinyDistributeCache_Debug CMakeFiles/tinyDistributeCache.dir/main.cpp.o CMakeFiles/tinyDistributeCache.dir/service.cpp.o CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o | googletest/libgtest.a || googletest/libgtest.a
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk
+  LINK_LIBRARIES = googletest/libgtest.a  -lpthread
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -125,7 +181,151 @@ build tinyDistributeCache: CXX_EXECUTABLE_LINKER__tinyDistributeCache_Debug CMak
   TARGET_PDB = tinyDistributeCache.dbg
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/chenglinli/CLionProjects/tinyDistributeCache/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for install/local
+
+build googletest/CMakeFiles/install/local.util: CUSTOM_COMMAND googletest/all
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build googletest/install/local: phony googletest/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build googletest/list_install_components: phony
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build googletest/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/chenglinli/CLionProjects/tinyDistributeCache -B/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build googletest/rebuild_cache: phony googletest/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build googletest/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build googletest/edit_cache: phony googletest/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for install/strip
+
+build googletest/CMakeFiles/install/strip.util: CUSTOM_COMMAND googletest/all
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build googletest/install/strip: phony googletest/CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build googletest/CMakeFiles/install.util: CUSTOM_COMMAND googletest/all
+  COMMAND = cd /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build googletest/install: phony googletest/CMakeFiles/install.util
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gtest_main
+
+
+#############################################
+# Order-only phony target for gtest_main
+
+build cmake_object_order_depends_target_gtest_main: phony || cmake_object_order_depends_target_gtest
+
+build googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o: CXX_COMPILER__gtest_main_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/src/gtest_main.cc || cmake_object_order_depends_target_gtest_main
+  DEP_FILE = googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk   -DGTEST_HAS_PTHREAD=1   -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest
+  OBJECT_DIR = googletest/CMakeFiles/gtest_main.dir
+  OBJECT_FILE_DIR = googletest/CMakeFiles/gtest_main.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gtest_main
+
+
+#############################################
+# Link the static library googletest/libgtest_main.a
+
+build googletest/libgtest_main.a: CXX_STATIC_LIBRARY_LINKER__gtest_main_Debug googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o || googletest/libgtest.a
+  ARCH_FLAGS = -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = googletest/CMakeFiles/gtest_main.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = googletest/libgtest_main.a
+  TARGET_PDB = gtest_main.a.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gtest
+
+
+#############################################
+# Order-only phony target for gtest
+
+build cmake_object_order_depends_target_gtest: phony || googletest/CMakeFiles/gtest.dir
+
+build googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o: CXX_COMPILER__gtest_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/src/gtest-all.cc || cmake_object_order_depends_target_gtest
+  DEP_FILE = googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk   -DGTEST_HAS_PTHREAD=1   -std=gnu++17
+  INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest
+  OBJECT_DIR = googletest/CMakeFiles/gtest.dir
+  OBJECT_FILE_DIR = googletest/CMakeFiles/gtest.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gtest
+
+
+#############################################
+# Link the static library googletest/libgtest.a
+
+build googletest/libgtest.a: CXX_STATIC_LIBRARY_LINKER__gtest_Debug googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+  ARCH_FLAGS = -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = googletest/CMakeFiles/gtest.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = googletest/libgtest.a
+  TARGET_PDB = gtest.a.dbg
+
+# =============================================================================
 # Target aliases.
+
+build gtest: phony googletest/libgtest.a
+
+build gtest_main: phony googletest/libgtest_main.a
+
+build libgtest.a: phony googletest/libgtest.a
+
+build libgtest_main.a: phony googletest/libgtest_main.a
 
 # =============================================================================
 # Folder targets.
@@ -135,7 +335,14 @@ build tinyDistributeCache: CXX_EXECUTABLE_LINKER__tinyDistributeCache_Debug CMak
 #############################################
 # Folder: /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug
 
-build all: phony tinyDistributeCache
+build all: phony tinyDistributeCache googletest/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest
+
+build googletest/all: phony googletest/libgtest_main.a googletest/libgtest.a
 
 # =============================================================================
 # Built-in targets
@@ -144,14 +351,14 @@ build all: phony tinyDistributeCache
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | ../CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../googletest/CMakeLists.txt ../googletest/cmake/internal_utils.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckCSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckIncludeFile.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckLibraryExists.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPythonInterp.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindThreads.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Internal/CheckSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ../CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake: phony
+build ../CMakeLists.txt ../googletest/CMakeLists.txt ../googletest/cmake/internal_utils.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckCSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckIncludeFile.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckLibraryExists.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPythonInterp.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindThreads.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Internal/CheckSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake: phony
 
 
 #############################################
