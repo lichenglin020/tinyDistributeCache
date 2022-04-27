@@ -1,6 +1,6 @@
 //#include "thrd_pool.hpp"
 #include "gtest/gtest.h"
-#include "../cache/ThreadPool.h"
+#include "../common/ThreadPool.h"
 namespace{
     void Sleep_ms(int n){
         struct timeval delay;

@@ -142,19 +142,19 @@ build CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o: CXX_COMPILER__tinyDist
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
   OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/cache
 
-build CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/cache/ThreadPool.cpp || cmake_object_order_depends_target_tinyDistributeCache
-  DEP_FILE = CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o.d
+build CMakeFiles/tinyDistributeCache.dir/common/ThreadPool.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/common/ThreadPool.cpp || cmake_object_order_depends_target_tinyDistributeCache
+  DEP_FILE = CMakeFiles/tinyDistributeCache.dir/common/ThreadPool.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
   INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
-  OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/cache
+  OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/common
 
-build CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/cache/Task.cpp || cmake_object_order_depends_target_tinyDistributeCache
-  DEP_FILE = CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o.d
+build CMakeFiles/tinyDistributeCache.dir/common/Task.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/common/Task.cpp || cmake_object_order_depends_target_tinyDistributeCache
+  DEP_FILE = CMakeFiles/tinyDistributeCache.dir/common/Task.cpp.o.d
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
   INCLUDES = -I/Users/chenglinli/CLionProjects/tinyDistributeCache/googletest/include
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
-  OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/cache
+  OBJECT_FILE_DIR = CMakeFiles/tinyDistributeCache.dir/common
 
 build CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o: CXX_COMPILER__tinyDistributeCache_Debug /Users/chenglinli/CLionProjects/tinyDistributeCache/test/test_thread_pool.cpp || cmake_object_order_depends_target_tinyDistributeCache
   DEP_FILE = CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o.d
@@ -171,7 +171,7 @@ build CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o: CXX_COMPIL
 #############################################
 # Link the executable tinyDistributeCache
 
-build tinyDistributeCache: CXX_EXECUTABLE_LINKER__tinyDistributeCache_Debug CMakeFiles/tinyDistributeCache.dir/main.cpp.o CMakeFiles/tinyDistributeCache.dir/service.cpp.o CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/ThreadPool.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/Task.cpp.o CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o | googletest/libgtest.a || googletest/libgtest.a
+build tinyDistributeCache: CXX_EXECUTABLE_LINKER__tinyDistributeCache_Debug CMakeFiles/tinyDistributeCache.dir/main.cpp.o CMakeFiles/tinyDistributeCache.dir/service.cpp.o CMakeFiles/tinyDistributeCache.dir/common/ConsistentHash.cpp.o CMakeFiles/tinyDistributeCache.dir/cache/LRU.cpp.o CMakeFiles/tinyDistributeCache.dir/common/ThreadPool.cpp.o CMakeFiles/tinyDistributeCache.dir/common/Task.cpp.o CMakeFiles/tinyDistributeCache.dir/test/test_thread_pool.cpp.o | googletest/libgtest.a || googletest/libgtest.a
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk
   LINK_LIBRARIES = googletest/libgtest.a  -lpthread
   OBJECT_DIR = CMakeFiles/tinyDistributeCache.dir
