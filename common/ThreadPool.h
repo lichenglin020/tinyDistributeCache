@@ -55,6 +55,17 @@ private:
     bool shutdown;
 };
 
+
+
+
+
+
+
+
+
+
+
+
 /**
  * 以下版本使用了c++11的thread方法实现，待完成
  */

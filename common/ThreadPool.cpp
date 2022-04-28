@@ -34,6 +34,10 @@ ThreadPool::~ThreadPool() {
     pthread_cond_destroy(&notEmpty);
 }
 
+/**
+ * 添加新的任务到线程池中的任务队列
+ * @param Task task
+ */
 void ThreadPool::addTask(Task& task){
     if (shutdown)
         return;
@@ -41,6 +45,22 @@ void ThreadPool::addTask(Task& task){
     pthread_cond_signal(&notEmpty);
 }
 
+/**
+ * 添加新的任务到线程池中的任务队列
+ * @param func 任务调用函数
+ * @param args 任务调用的函数参数
+ */
+void ThreadPool::addTask(callback func, void *args) {
+    if (shutdown)
+        return;
+    taskQueue.addTask(func, args);
+    pthread_cond_signal(&notEmpty);
+}
+
+/**
+ * 获取当前存活的总线程数
+ * @return int
+ */
 int ThreadPool::getAliveNumber(){
     int threadNum = 0;
     pthread_mutex_lock(&mtx);
@@ -49,6 +69,10 @@ int ThreadPool::getAliveNumber(){
     return threadNum;
 }
 
+/**
+ * 获取忙碌的线程数量
+ * @return int
+ */
 int ThreadPool::getBusyNumber(){
     int busyNum = 0;
     pthread_mutex_lock(&mtx);
@@ -57,6 +81,11 @@ int ThreadPool::getBusyNumber(){
     return busyNum;
 }
 
+/**
+ * 工作线程实际调用函数
+ * @param args 线程方法的参数（实际传入的是this本身）
+ * @return nullptr
+ */
 void* ThreadPool::workerFunc(void *args) {
     ThreadPool* pool = static_cast<ThreadPool*>(args);
     while(true){
@@ -64,6 +93,7 @@ void* ThreadPool::workerFunc(void *args) {
         // 如果任务队列为空，那么就持续等待，直到不为空的信号到来
         while(pool -> taskQueue.size() == 0 && !pool -> shutdown){
             pthread_cond_wait(&pool -> notEmpty, &pool -> mtx);
+            // 被唤醒后如果发现自杀线程数不为零，且总线程数是大于最小线程数的，那么被唤醒的该线程直接自杀退出
             if(pool -> exitNum > 0){
                 pool -> exitNum--;
                 if(pool -> aliveNum > pool -> minNum){
@@ -95,6 +125,11 @@ void* ThreadPool::workerFunc(void *args) {
     return nullptr;
 }
 
+/**
+ * 管理线程实际调用函数
+ * @param args 线程方法的参数（实际传入的是this本身）
+ * @return nullptr
+ */
 void* ThreadPool::managerFunc(void *args) {
     ThreadPool* pool = static_cast<ThreadPool*>(args);
     while(!pool -> shutdown){
@@ -145,6 +180,17 @@ void ThreadPool::threadExit() {
     }
     pthread_exit(nullptr);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

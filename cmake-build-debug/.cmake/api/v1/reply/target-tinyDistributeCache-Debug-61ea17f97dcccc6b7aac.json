@@ -72,7 +72,9 @@
 				4,
 				6,
 				8,
-				10
+				10,
+				11,
+				13
 			]
 		}
 	],
@@ -128,7 +130,9 @@
 				4,
 				6,
 				8,
-				10
+				10,
+				11,
+				13
 			]
 		},
 		{
@@ -138,7 +142,9 @@
 				3,
 				5,
 				7,
-				9
+				9,
+				12,
+				14
 			]
 		}
 	],
@@ -205,6 +211,28 @@
 			"compileGroupIndex" : 0,
 			"path" : "test/test_thread_pool.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "common/logFile.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "common/logFile.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "test/test_log_file.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "test/logfile.hpp",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"
