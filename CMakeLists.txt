@@ -21,7 +21,7 @@ add_executable(tinyDistributeCache
         test/test_thread_pool.cpp
         common/LogFile.cpp
         common/LogFile.h
-        test/test_log_file.cpp)
+        test/test_log_file.cpp test/test_lru.cpp)
 
 # 将项目链接到getest上，gtestTest为项目名称，LIBRARIES为之前set的库名称
 target_link_libraries(tinyDistributeCache ${LIBRARIES})

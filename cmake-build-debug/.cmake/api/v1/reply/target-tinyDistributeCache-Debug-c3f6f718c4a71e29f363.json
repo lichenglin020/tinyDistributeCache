@@ -74,7 +74,8 @@
 				8,
 				10,
 				11,
-				13
+				13,
+				14
 			]
 		}
 	],
@@ -132,7 +133,8 @@
 				8,
 				10,
 				11,
-				13
+				13,
+				14
 			]
 		},
 		{
@@ -226,6 +228,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "test/test_log_file.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "test/test_lru.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

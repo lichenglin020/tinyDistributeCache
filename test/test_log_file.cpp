@@ -23,21 +23,21 @@ void* producer_thread_proc(void* arg1)
     return NULL;
 }
 
-int main()
-{
-    LogFile logfile(INFO,500);
-    std::string filename = "../log/my.log";
-    logfile.openLogFile(filename);
-    std::vector<std::thread> vec;
-    int threadNum = 3;
-    for (int i=0; i<threadNum; i++){
-        vec.push_back(std::thread(producer_thread_proc, &logfile));
-    }
-//    std::thread consumer(LogFile::writeToFile, &logfile);
-    for (int i=0; i<threadNum; i++){
-        vec[i].join();
-    }
-    logfile.join();
-//    consumer.join();
-    return 0;
-}
+//int main()
+//{
+//    LogFile logfile(INFO,500);
+//    std::string filename = "../log/my.log";
+//    logfile.openLogFile(filename);
+//    std::vector<std::thread> vec;
+//    int threadNum = 3;
+//    for (int i=0; i<threadNum; i++){
+//        vec.push_back(std::thread(producer_thread_proc, &logfile));
+//    }
+////    std::thread consumer(LogFile::writeToFile, &logfile);
+//    for (int i=0; i<threadNum; i++){
+//        vec[i].join();
+//    }
+//    logfile.join();
+////    consumer.join();
+//    return 0;
+//}
