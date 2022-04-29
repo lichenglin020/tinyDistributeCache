@@ -2,7 +2,7 @@
 // Created by Chenglinli on 2022/4/27.
 //
 
-#include "logFile.h"
+#include "LogFile.h"
 
 LogFile::~LogFile() {
     if(logFilePtr != nullptr) fclose(logFilePtr);
@@ -10,6 +10,7 @@ LogFile::~LogFile() {
 }
 
 void LogFile::openLogFile(std::string& fileName) {
+    std::unique_lock<std::mutex> lck(mtx);
     this -> fileName = fileName;
     if(logFilePtr != nullptr) fclose(logFilePtr);
     // 创建初始的log文件
@@ -18,6 +19,11 @@ void LogFile::openLogFile(std::string& fileName) {
     fileNum = 1;
 }
 
+/**
+ * 向log文件中写入数据的线程调用函数
+ * @param arg LogFile*
+ * @return nullptr
+ */
 void* LogFile::writeToFile(void *arg){
     LogFile* logFile = static_cast<LogFile*>(arg);
     std::string line = "";
@@ -56,6 +62,10 @@ void* LogFile::writeToFile(void *arg){
     return nullptr;
 }
 
+/**
+ * 获取当前时间
+ * @param timeStr
+ */
 void LogFile::getTime(char* timeStr)
 {
     time_t rawtime;
@@ -67,6 +77,15 @@ void LogFile::getTime(char* timeStr)
              ptminfo->tm_hour, ptminfo->tm_min, ptminfo->tm_sec);
 }
 
+/**
+ * 将信息添加到日志队列的函数
+ * @param log_level 日志等级
+ * @param file_name 调用该函数的文件的名称
+ * @param func_name 调用该函数的函数的名称
+ * @param code_line 调用点在所在文件的行数
+ * @param fmt 格式化的不定参数，用于vsnprintf
+ * @param ...
+ */
 void LogFile::writeLog(LOG_LEVEL log_level, std::string file_name, std::string func_name, int code_line, const char* fmt, ...) {
     if(log_level < level) return;
 
@@ -81,22 +100,24 @@ void LogFile::writeLog(LOG_LEVEL log_level, std::string file_name, std::string f
     ss << "[" << LogLevelNames[log_level] << "]";
     // 线程id
     ss << "[tid:" << std::this_thread::get_id() <<"]";
-    // 文件名
-    std::string fname = file_name.substr(file_name.find_last_of("/")+1);
-    // 文件代码行及所在函数名
-    ss << "[" << fname << "(" << code_line << "):" << func_name <<"]";
+    // 文件名，文件代码行及所在函数名
+    ss << "[" << file_name << "(" << code_line << "):" << func_name <<"]";
 
     //content
+    // 定义变参列表
     va_list ap;
-    va_start(ap,fmt);
-    int len = vsnprintf(nullptr,0,fmt, ap);
+    // 获取变参首地址，并赋给变参列表
+    va_start(ap, fmt);
+    int len = vsnprintf(nullptr,0,fmt, ap); // 将可变参数格式化输出到一个字符数组（此处未输出，仅获取变参长度）
     va_end(ap);
+
     va_start(ap,fmt);
     char* content = new char[len+1];
-    vsnprintf(content,len+1,fmt,ap);
+    vsnprintf(content,len+1,fmt,ap); // 将可变参数格式化输出到content中
     va_end(ap);
     ss << content;
     ss << "\n";
+    delete[] content;
 
     std::unique_lock<std::mutex> lck(mtx);
     cached_log.push(ss.str());

@@ -14,18 +14,18 @@ void* producer_thread_proc(void* arg1)
     {
         index++;
         if (index == 10) break;
-        // std::cout << index << std::endl
 
         arg -> LOGINFO("id=%d, gg=%d,hh=%d,ff=%s",index,12,10,"sdfa");
         arg -> LOGWARNING("id=%d, gg=%d,hh=%d,ff=%s",index,11,10,"abcd");
 //        sleep(0.1);
+//        std::this_thread::sleep_for(100ms);
     }
     return NULL;
 }
 
 int main()
 {
-    LogFile logfile(INFO,1,500);
+    LogFile logfile(INFO,500);
     std::string filename = "../log/my.log";
     logfile.openLogFile(filename);
     std::vector<std::thread> vec;
@@ -33,10 +33,11 @@ int main()
     for (int i=0; i<threadNum; i++){
         vec.push_back(std::thread(producer_thread_proc, &logfile));
     }
-    std::thread consumer(LogFile::writeToFile, &logfile);
+//    std::thread consumer(LogFile::writeToFile, &logfile);
     for (int i=0; i<threadNum; i++){
         vec[i].join();
     }
-    consumer.join();
+    logfile.join();
+//    consumer.join();
     return 0;
 }

@@ -7,7 +7,21 @@ set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(./googletest)
 set(LIBRARIES gtest pthread) # pthread必须添加，因为gtest需要其支持
 
-add_executable(tinyDistributeCache main.cpp service.cpp common/ConsistentHash.cpp common/ConsistentHash.h cache/LRU.cpp cache/LRU.h common/ThreadPool.cpp common/ThreadPool.h common/Task.cpp common/Task.h test/test_thread_pool.cpp common/logFile.cpp common/logFile.h test/test_log_file.cpp)
+add_executable(tinyDistributeCache
+        main.cpp
+        service.cpp
+        common/threadpool/Task.cpp
+        common/threadpool/Task.h
+        common/threadpool/ThreadPool.cpp
+        common/threadpool/ThreadPool.h
+        common/ConsistentHash.cpp
+        common/ConsistentHash.h
+        cache/LRU.cpp
+        cache/LRU.h
+        test/test_thread_pool.cpp
+        common/LogFile.cpp
+        common/LogFile.h
+        test/test_log_file.cpp)
 
 # 将项目链接到getest上，gtestTest为项目名称，LIBRARIES为之前set的库名称
 target_link_libraries(tinyDistributeCache ${LIBRARIES})

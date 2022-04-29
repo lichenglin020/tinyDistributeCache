@@ -28,7 +28,7 @@ private:
 };
 
 /*
- * 任务队列
+ * 任务队列(线程安全的)
  */
 class TaskQueue{
 public:
