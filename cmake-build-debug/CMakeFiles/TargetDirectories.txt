@@ -2,8 +2,11 @@
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/install/strip.dir
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/install.dir
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/list_install_components.dir
-/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/rebuild_cache.dir
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/test_lru.dir
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/test_log_file.dir
+/Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/test_thread_pool.dir
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/CMakeFiles/tinyDistributeCache.dir
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest/CMakeFiles/install/local.dir
 /Users/chenglinli/CLionProjects/tinyDistributeCache/cmake-build-debug/googletest/CMakeFiles/list_install_components.dir
