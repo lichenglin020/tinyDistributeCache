@@ -19,7 +19,7 @@ add_executable(tinyDistributeCache
         cache/LRU.h
         common/LogFile.cpp
         common/LogFile.h
-        common/epollWrap.h)
+        common/EpollWrap.h)
 add_executable(test_log_file
         common/LogFile.cpp
         common/LogFile.h
