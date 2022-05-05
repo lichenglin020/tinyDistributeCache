@@ -97,6 +97,9 @@ int main(){
     //receive as server
     CacheData cacheData(ThrPl, LC, LC_BK, key_addr);
     cacheData.listen();
+    logFile.LOGINFO("the cache server is running.");
+    logFile.LOGINFO(curen_addr.c_str());
+
     for(;;){
         int nready = cacheData.wait(500);
         if(nready <= 0)
@@ -108,6 +111,7 @@ int main(){
                 cacheData.acceptHandler();
             }
             else{
+                logFile.LOGINFO("receive new read or write request");
                 cacheData.readAndWriteHandler(i);
             }
 

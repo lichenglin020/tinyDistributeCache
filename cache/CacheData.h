@@ -26,7 +26,7 @@ public:
     void acceptHandler();       // 当epoll触发事件是accept客户端连接时的处理逻辑
     void readAndWriteHandler(int index); // 当epoll触发事件是读写事件时的处理逻辑
 
-    bool isListenedFd(int index);
+    bool isListenedFd(int socket);
 
 
 private:

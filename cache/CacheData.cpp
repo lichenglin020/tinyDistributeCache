@@ -65,7 +65,6 @@ int CacheData::wait(int microsecond = 500) {
 
 /**
  * epoll响应客户端连接套接字是的线程操作函数
- * ？？？？这里的线程使用有很大的疑惑
  * @param serverAcceptStruct
  */
 void acceptTaskThreadFunc(void* serverAcceptStruct){
@@ -74,6 +73,7 @@ void acceptTaskThreadFunc(void* serverAcceptStruct){
     ConnectTask connectTask((ServerAcceptStruct*)serverAcceptStruct);
 //    pthread_mutex_unlock(&tasklisten_lock);
     connectTask.accept();
+    delete (ServerAcceptStruct*)serverAcceptStruct;
     pthread_rwlock_unlock(&shutdown_lock);
 }
 
@@ -100,7 +100,6 @@ void CacheData::acceptHandler() {
 
 /**
  * epoll响应客户端读写请求的线程操作函数
- * ？？？？这里的线程使用有很大的疑惑
  * @param serverRwStruct
  */
 void readAndWriteTaskThreadFunc(void* serverRwStruct){
@@ -126,6 +125,7 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
             pthread_mutex_unlock(&reflesh_master_lock);
         }
     }
+    delete (ServerRWStruct *)serverRwStruct;
 
 
     pthread_rwlock_unlock(&shutdown_lock);
@@ -147,13 +147,18 @@ void CacheData::readAndWriteHandler(int index) {
     tmp -> lruCacheBackup = serverRwStruct.lruCacheBackup;
     tmp -> clientSocket = readyEvents[index].data.fd;
 
-    Task task(readAndWriteTaskThreadFunc, &serverRwStruct);
+    Task task(readAndWriteTaskThreadFunc, tmp);
     logFile.LOGINFO("add read and write handler to thread pool.");
     cacheDataThreadPool ->addTask(task);
     pthread_mutex_unlock(&task_lock);
 }
 
-bool CacheData::isListenedFd(int index) {
-    return readyEvents[index].data.fd == listenedServerSocket;
+/**
+ * 用于判断是和是连接事件
+ * @param socket 文件描述符
+ * @return
+ */
+bool CacheData::isListenedFd(int socket) {
+    return readyEvents[socket].data.fd == listenedServerSocket;
 }
 

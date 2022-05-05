@@ -51,7 +51,7 @@ int PutGetTask::getInfoType() {
 
 /**
  * 客户端读取数据时的处理方法
- * ??????? 读取数据的时候也需要同步副本吧？？？
+ * 尚未完成：读取数据的时候也需要同步副本
  */
 void PutGetTask::kvReadHandler() {
     pthread_rwlock_rdlock(&rw_lock);
@@ -131,7 +131,6 @@ void PutGetTask::kvWriteHandler() {
 
 /**
  * 刷新IP地址信息
- * ？？？？？
  * @return
  */
 std::string PutGetTask::refleshMaster() {
