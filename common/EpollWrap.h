@@ -12,6 +12,7 @@
 #include <arpa/inet.h>
 #include <cerrno>
 #include <string>
+#include<fcntl.h>
 
 /**
  * epoll 的包装头文件
@@ -23,10 +24,7 @@
  * 将error信息输出，并终止程序运行
  * @param str 等同于perror参数
  */
-void perrorAndExit(const char* str){
-    perror(str);
-    exit(EXIT_FAILURE);
-}
+extern void perrorAndExit(const char* str);
 
 /**
  * 创建套接字
@@ -35,11 +33,7 @@ void perrorAndExit(const char* str){
  * @param protocol 所使用的协议
  * @return
  */
-int createSocket(int domain, int type, int protocol){
-    int n = socket(domain, type, protocol);
-    if(n < 0) perrorAndExit("create socket error: ");
-    return n;
-}
+extern int createSocket(int domain, int type, int protocol);
 
 /**
  * 绑定socket到指定ip及端口
@@ -48,11 +42,7 @@ int createSocket(int domain, int type, int protocol){
  * @param socklen
  * @return
  */
-int bindSocket(int fd, const struct sockaddr* _sockaddr, socklen_t socklen){
-    int n = bind(fd, _sockaddr, socklen);
-    if(n < 0) perrorAndExit("bind error: ");
-    return n;
-}
+extern int bindSocket(int fd, const struct sockaddr* _sockaddr, socklen_t socklen);
 
 /**
  * 进入监听套接字状态，等待用户发起请求
@@ -60,11 +50,7 @@ int bindSocket(int fd, const struct sockaddr* _sockaddr, socklen_t socklen){
  * @param size 请求队列长度
  * @return
  */
-int listenSocket(int fd, int size){
-    int n = listen(fd, size);
-    if(n < 0) perrorAndExit("listen error:");
-    return n;
-}
+extern int listenSocket(int fd, int size);
 
 /**
  * 通过accept接收来自客户端的请求
@@ -73,19 +59,7 @@ int listenSocket(int fd, int size){
  * @param socklen
  * @return
  */
-int acceptSocket(int fd, sockaddr* _sockaddr, socklen_t* socklen){
-    int clnt_sock;
-    //接收客户端请求
-//    sockaddr_in clnt_addr;
-//    socklen_t clnt_addr_size = sizeof(clnt_addr);
-    do{
-        clnt_sock = accept(fd, _sockaddr, socklen);
-        if(clnt_sock > 0) return clnt_sock;
-        // 出现错误时，如果是因为信号终端或者软件引起的连接终止需要重启accept连接。
-    }while(errno == EINTR || errno == ECONNABORTED);
-    perrorAndExit("accept error: ");
-    return -1;
-}
+extern int acceptSocket(int fd, sockaddr* _sockaddr, socklen_t* socklen);
 
 /**
  * 连接socket
@@ -94,11 +68,7 @@ int acceptSocket(int fd, sockaddr* _sockaddr, socklen_t* socklen){
  * @param socklen
  * @return
  */
-int connectSocket(int fd, const struct sockaddr* _sockaddr, socklen_t socklen){
-    int n = connect(fd, _sockaddr, socklen);
-    if(n<0) perror("connect error: ");
-    return n;
-}
+extern int connectSocket(int fd, const struct sockaddr* _sockaddr, socklen_t socklen);
 
 /**
  * 读取数据操作
@@ -107,15 +77,7 @@ int connectSocket(int fd, const struct sockaddr* _sockaddr, socklen_t socklen){
  * @param size buffer大小
  * @return
  */
-ssize_t readInfo(int clientFd, char* buffer, int size){
-    ssize_t n;
-    do{
-        n = read(clientFd, buffer, size);
-        if(n >= 0) return n;
-    }while(errno == EINTR || errno == EAGAIN);
-    perror("read: ");
-    return n;
-}
+extern ssize_t readInfo(int clientFd, char* buffer, int size);
 
 /**
  * 循环的读取所有数据
@@ -124,33 +86,7 @@ ssize_t readInfo(int clientFd, char* buffer, int size){
  * @param size
  * @return
  */
-ssize_t readAllInfo(int clientFd, char* buffer, int size){
-    std::string result = "";
-    bool isEnd = false;
-    ssize_t resultn;
-    int n = 0;
-    do{
-        n = read(clientFd, buffer, size);
-        if(n > 0 && !isEnd){
-            for(int i = 0; i < n; i++){
-                if(buffer[i] == '\0'){
-                    isEnd = true;
-                    break;
-                }
-                if(!isEnd){
-                    result += buffer[i];
-                    resultn++;
-                }
-            }
-        }
-    } while (n > 0 || errno == EINTR);
-    if(resultn == 0) return n;
-    for(int i = 0; i < result.size(); i++){
-        buffer[i] = result[i];
-    }
-    buffer[result.size()] = '\0';
-    return resultn;
-}
+extern ssize_t readAllInfo(int clientFd, char* buffer, int size);
 
 /**
  * 写数据操作
@@ -159,26 +95,14 @@ ssize_t readAllInfo(int clientFd, char* buffer, int size){
  * @param size 数据大小
  * @return
  */
-ssize_t writeInfo(int clientFd, char* buffer, int size){
-    ssize_t n;
-    do{
-        n = write(clientFd, buffer, size);
-        if(n >= 0) return n;
-    }while(errno == EINTR || errno == EAGAIN);
-    perror("write: ");
-    return n;
-}
+extern ssize_t writeInfo(int clientFd, char* buffer, int size);
 
 /**
  * 创建epoll内核事件表的文件描述符
  * @param size
  * @return
  */
-int epollCreate(int size){
-    int epoll_fd = epoll_create(size);
-    if(epoll_fd < 0) perrorAndExit("epoll create error: ");
-    return epoll_fd;
-}
+extern int epollCreate(int size);
 
 /**
  * 操作内核事件表监控的文件描述符上的事件，添加监听事件
@@ -188,11 +112,7 @@ int epollCreate(int size){
  * @param event epoll事件
  * @return
  */
-int epollCtl(int epoll_fd, int op, int fd, struct epoll_event *event){
-    int n = epoll_ctl(epoll_fd, op, fd, event);
-    if(n < 0) perror("epoll control: ");
-    return n;
-}
+extern int epollCtl(int epoll_fd, int op, int fd, struct epoll_event *event);
 
 /**
  * 等待所监控文件描述符上事件的产生，返回就绪的文件描述符个数
@@ -202,34 +122,25 @@ int epollCtl(int epoll_fd, int op, int fd, struct epoll_event *event){
  * @param timeout 超时时间
  * @return
  */
-int epollWait(int epoll_fd, struct epoll_event *events, int maxevents, int timeout){
-    int n = epoll_wait(epoll_fd, events, maxevents, timeout);
-    if(n < 0) perrorAndExit("epoll_wait error: ");
-//    if(n == 0) printf("time out \n");
-    return n;
-}
+extern int epollWait(int epoll_fd, struct epoll_event *events, int maxevents, int timeout);
 
 /**
  * 使用select实现的线程安全的毫秒级定时器
  * @param n ms的时停
  */
-void selectSleep(int n){
-    timeval timev;
-    timev.tv_sec = 0;
-    timev.tv_usec = n * 1000;
-    select(0, nullptr, nullptr, nullptr, &timev);
-}
+extern void selectSleep(int n);
+/**
+ * 设置文件描述符为非阻塞模式
+ * @param sock
+ * @return
+ */
+extern int setNoblock(int sock);
 
-
-
-
-
-
-
-
-
-
-
+/**
+ * 设置服务端先断开连接时，可立即复用端口，避免进入到TIME_WAIT状态
+ * @param serv_sock
+ */
+extern void setReuseAddr(int serv_sock);
 
 
 #endif //TINYDISTRIBUTECACHE_EPOLLWRAP_H
