@@ -101,7 +101,9 @@ void LogFile::writeLog(LOG_LEVEL log_level, std::string file_name, std::string f
     // 线程id
     ss << "[tid:" << std::this_thread::get_id() <<"]";
     // 文件名，文件代码行及所在函数名
-    ss << "[" << file_name << "(" << code_line << "):" << func_name <<"]";
+//    ss << "[" << file_name << "(" << code_line << "):" << func_name <<"]";
+    std::string fname1 = file_name.substr(file_name.find_last_of("//")+1);
+    ss << "[" << fname1 << "(" << code_line << "):" << func_name <<"]";
 
     //content
     // 定义变参列表
@@ -123,4 +125,18 @@ void LogFile::writeLog(LOG_LEVEL log_level, std::string file_name, std::string f
     cached_log.push(ss.str());
     lck.unlock();
     cv.notify_all();
+}
+
+/**
+ * 创建将队列中的消息写入Log日志文件的线程，并执行
+ */
+void LogFile::run() {
+    writeToFileThread = std::thread(writeToFile, this);
+}
+
+/**
+ * 阻塞调用该方法的线程，等待写入Log日志文件的线程结束
+ */
+void LogFile::join() {
+    writeToFileThread.join();
 }

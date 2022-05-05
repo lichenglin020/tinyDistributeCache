@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <thread>
 #include <unistd.h>
+#include <condition_variable>
 
 
 #include <stdarg.h>
@@ -31,20 +32,20 @@ enum LOG_LEVEL{
     FATAL = 5
 };
 
-#define LOGVERBOSE(...) writeLog(VERBOSE,__FILE_NAME__,__func__,__LINE__,##__VA_ARGS__)
-#define LOGTRACE(...) writeLog(TRACE,__FILE_NAME__,__func__,__LINE__,__VA_ARGS__)
-#define LOGINFO(...) writeLog(INFO,__FILE_NAME__,__func__,__LINE__,__VA_ARGS__)
-#define LOGWARNING(...) writeLog(WARNING,__FILE_NAME__,__func__,__LINE__,__VA_ARGS__)
-#define LOGERROR(...) writeLog(ERROR,__FILE_NAME__,__func__,__LINE__,__VA_ARGS__)
-#define LOGFATAL(...) writeLog(FATAL,__FILE_NAME__,__func__,__LINE__,__VA_ARGS__)
+#define LOGVERBOSE(...) writeLog(VERBOSE,__FILE__,__func__,__LINE__,##__VA_ARGS__)
+#define LOGTRACE(...) writeLog(TRACE,__FILE__,__func__,__LINE__,__VA_ARGS__)
+#define LOGINFO(...) writeLog(INFO,__FILE__,__func__,__LINE__,__VA_ARGS__)
+#define LOGWARNING(...) writeLog(WARNING,__FILE__,__func__,__LINE__,__VA_ARGS__)
+#define LOGERROR(...) writeLog(ERROR,__FILE__,__func__,__LINE__,__VA_ARGS__)
+#define LOGFATAL(...) writeLog(FATAL,__FILE__,__func__,__LINE__,__VA_ARGS__)
 #define TIME_STRING_LEN 32
 
 
 class LogFile {
 public:
-    LogFile(LOG_LEVEL log_level = INFO, int _sizeLimit = 10000):
+    LogFile(LOG_LEVEL log_level = INFO, int _sizeLimit = 10000, std::string _fileName = "my.log"):
     size(0), fileNum(0), logFilePtr(nullptr), level(log_level),
-    sizeLimit(_sizeLimit), fileName("my.log"), writeToFileThread(writeToFile, this){};
+    sizeLimit(_sizeLimit), fileName(_fileName){};
 
     virtual ~LogFile();
 
@@ -53,12 +54,8 @@ public:
     // 将log信息添加到消息队列中
     void writeLog(LOG_LEVEL log_level, std::string file_name, std::string func, int line, const char* fmt, ...);
 
-    /**
-     * 阻塞线程
-     */
-    void join(){
-        writeToFileThread.join();
-    }
+    void run();
+    void join();
 
 private:
     static void getTime(char* timeStr);
