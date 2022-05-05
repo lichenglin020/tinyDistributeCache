@@ -34,6 +34,7 @@ int main()
         vec.push_back(std::thread(producer_thread_proc, &logfile));
     }
 //    std::thread consumer(LogFile::writeToFile, &logfile);
+    logfile.run();
     for (int i=0; i<threadNum; i++){
         vec[i].join();
     }
