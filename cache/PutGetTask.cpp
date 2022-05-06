@@ -99,7 +99,7 @@ void PutGetTask::kvWriteHandler() {
     lruCache -> put(info["data"]["key"], info["data"]["value"]);
 
     // 获取副本节点地址信息
-    std::string backUpServeraddr = keyAddrs -> getNextServerIndex(info["data"]["key"]);
+    std::string backUpServeraddr = keyAddrs -> getNextServerIndex(curen_addr);
     // 将数据传送给副本节点
     if(!backUpServeraddr.empty() && backUpServeraddr != curen_addr){
         logFile.LOGINFO("send info to backup.");

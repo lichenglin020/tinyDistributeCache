@@ -21,6 +21,7 @@ public:
     virtual ~Task(){}
     void run(){
         func(arg);
+        arg = nullptr;
     }
 private:
     callback func;  // 指定任务需要执行的回调函数

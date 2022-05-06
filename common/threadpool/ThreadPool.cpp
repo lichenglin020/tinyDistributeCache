@@ -74,11 +74,11 @@ int ThreadPool::getAliveNumber(){
  * @return int
  */
 int ThreadPool::getBusyNumber(){
-    int busyNum = 0;
+    int Num = 0;
     pthread_mutex_lock(&mtx);
-    busyNum = busyNum;
+    Num = busyNum;
     pthread_mutex_unlock(&mtx);
-    return busyNum;
+    return Num;
 }
 
 /**
