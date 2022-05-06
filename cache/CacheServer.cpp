@@ -64,14 +64,12 @@ ipAndPort getIpAndPort(std::string addr){
 
 
 int main(){
-    //create log thread
+    // 创建log日志，并启动
     std::string filename = "../log/CacheServer.log";
     logFile.openLogFile(filename);
     logFile.run();
-//    pthread_t tid_log;
-//    Pthread_create(&tid_log, nullptr, write_log, &logfile);
 
-    //create heartbeat thread
+    // cache节点需要使用一致性哈希是因为其需要根据key值找到自己的备份节点
     auto key_addr = std::make_shared<ConsistentHash>(100);
     key_addr -> init({curen_addr});
     auto ipport_list = std::make_shared<std::vector<std::string>>();

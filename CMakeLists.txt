@@ -47,6 +47,10 @@ add_executable(test_thread_pool
         common/threadpool/ThreadPool.cpp
         test/test_thread_pool.cpp)
 add_executable(test main.cpp)
+add_executable(test_consistentHash
+        common/ConsistentHash.cpp
+        common/ConsistentHash.h
+        test/test_consistentHash.cpp)
 
 # 将项目链接到getest上，gtestTest为项目名称，LIBRARIES为之前set的库名称
 target_link_libraries(test_lru ${LIBRARIES})

@@ -2,18 +2,7 @@
 // Created by Chenglinli on 2022/5/5.
 //
 
-
-//
-// Created by Chenglinli on 2022/5/1.
-//
-
 #include "EpollWrap.h"
-
-/**
- * epoll 的包装头文件
- * 在该文件中对epoll的操作添加必要的信息，并进行封装
- * 并不包含所有方法，仅对部分方法进行封装
- */
 
 /**
  * 将error信息输出，并终止程序运行
