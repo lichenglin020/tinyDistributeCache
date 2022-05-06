@@ -8,6 +8,7 @@ add_subdirectory(./googletest)
 set(LIBRARIES gtest pthread) # pthread必须添加，因为gtest需要其支持
 
 # 在linux在需要使用c++11多线程会出现问题，所需要添加的支持
+# 否则会出现Enable multithreading to use std::thread: Operation not permitted错误
 SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 
 add_executable(tinyDistributeCache

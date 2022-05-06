@@ -7,6 +7,7 @@
 
 //#include "CacheServer.h"
 #include "CacheData.h"
+#include <sstream>
 
 std::string master_addr = "127.0.0.1:7000";
 const std::string curen_addr = CACHESERV_IP+(std::string)":"+std::to_string(CACHESERV_PORT);
@@ -49,24 +50,16 @@ json getWriteBackupJson(const std::string& key, const std::string& value){
 /**
  * 从string中解读ip地址及端口信息
  * @param addr ip:port字符串
- * @return ipport_pair
+ * @return ipAndPort
  */
 ipAndPort getIpAndPort(std::string addr){
-    bool ip_order = true;
-    std::string port_s;
-    ipAndPort res;
-    for(char c: addr){
-        if(c==':'){
-            ip_order = !ip_order;
-            continue;
-        }
-        if(ip_order)
-            res.ip += c;
-        else
-            port_s+=c;
-    }
-    res.port = stoi(port_s);
-    return res;
+    ipAndPort result;
+    std::stringstream ss(addr);
+    getline(ss, result.ip, ':');
+    std::string port;
+    getline(ss, port, ':');
+    result.ip = std::stoi(port);
+    return result;
 }
 
 
