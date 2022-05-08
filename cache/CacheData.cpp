@@ -107,27 +107,33 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
 //    pthread_mutex_lock(&task_lock);
     PutGetTask putGetTask((ServerRWStruct *)serverRwStruct);
 //    pthread_mutex_unlock(&task_lock);
-    ssize_t n = putGetTask.readFromClient();
-    if(n == 0){
-        putGetTask.closeConnect();
-    }else if(n > 0){
-        auto type = putGetTask.getInfoType();
-        if(type == KEY_VALUE_REQUEST) {
-            logFile.LOGINFO("receive KEY_VALUE_REQUEST from client");
-            putGetTask.kvReadHandler();
-        }else if(type == KEY_VALUE_RESPOND || type == KEY_VALUE_RESPONDBK){
-            std::string info = "receive KEY_VALUE_RESPOND or KEY_VALUE_RESPONDBK:" + std::to_string(type);
-            logFile.LOGINFO(info.c_str());
-            putGetTask.kvWriteHandler();
-        }else if(type == REFLESH_MASTER){
-            pthread_mutex_lock(&reflesh_master_lock);
-            master_addr = putGetTask.refleshMaster();
-            pthread_mutex_unlock(&reflesh_master_lock);
+//    while(true){
+        ssize_t n = putGetTask.readFromClient();
+//        std::cout << n << std::endl;
+        if(n == 0){
+            putGetTask.closeConnect();
+//            break;
+        }else if(n > 0){
+            auto type = putGetTask.getInfoType();
+            if(type == KEY_VALUE_REQUEST) {
+                logFile.LOGINFO("receive KEY_VALUE_REQUEST from client");
+                putGetTask.kvReadHandler();
+            }else if(type == KEY_VALUE_RESPOND || type == KEY_VALUE_RESPONDBK){
+                std::string info = "receive KEY_VALUE_RESPOND or KEY_VALUE_RESPONDBK:" + std::to_string(type);
+                logFile.LOGINFO(info.c_str());
+                putGetTask.kvWriteHandler();
+            }else if(type == REFLESH_MASTER){
+                pthread_mutex_lock(&reflesh_master_lock);
+                master_addr = putGetTask.refleshMaster();
+                pthread_mutex_unlock(&reflesh_master_lock);
+            }
         }
-    }
+//        else{
+//            break;
+//        }
+//    }
+
     delete (ServerRWStruct *)serverRwStruct;
-
-
     pthread_rwlock_unlock(&shutdown_lock);
 }
 

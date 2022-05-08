@@ -3,6 +3,7 @@
 //
 
 #include "EpollWrap.h"
+#include "Tools.h"
 
 /**
  * 将error信息输出，并终止程序运行
@@ -97,8 +98,12 @@ ssize_t readInfo(int clientFd, char* buffer, int size){
     do{
         n = read(clientFd, buffer, size);
         if(n >= 0) return n;
+        if(errno == EAGAIN){
+            selectSleep(10); // 等待缓冲区准备就绪
+        }
     }while(errno == EINTR || errno == EAGAIN);
-    perror("read: ");
+    COUT("");
+    perror("read");
     return n;
 }
 
@@ -149,6 +154,9 @@ ssize_t writeInfo(int clientFd, char* buffer, int size){
     do{
         n = write(clientFd, buffer, size);
         if(n >= 0) return n;
+        if(errno == EAGAIN){
+            selectSleep(10); // 等待写缓冲区释放，再重试
+        }
     }while(errno == EINTR || errno == EAGAIN);
     perror("write: ");
     return n;

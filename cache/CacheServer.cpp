@@ -47,21 +47,6 @@ json getWriteBackupJson(const std::string& key, const std::string& value){
     return writeBackupJson;
 }
 
-/**
- * 从string中解读ip地址及端口信息
- * @param addr ip:port字符串
- * @return ipAndPort
- */
-ipAndPort getIpAndPort(std::string addr){
-    ipAndPort result;
-    std::stringstream ss(addr);
-    getline(ss, result.ip, ':');
-    std::string port;
-    getline(ss, port, ':');
-    result.ip = std::stoi(port);
-    return result;
-}
-
 
 int main(){
     // 创建log日志，并启动
@@ -93,15 +78,16 @@ int main(){
 
     for(;;){
         int nready = cacheData.wait(500);
-        if(nready <= 0)
+        if(nready <= 0){
             continue;
+        }
+
         pthread_rwlock_rdlock(&shutdown_lock);
         for(int i = 0; i < nready; i++){
             if(cacheData.isListenedFd(i)){
                 logFile.LOGINFO("receive new connect");
                 cacheData.acceptHandler();
-            }
-            else{
+            }else{
                 logFile.LOGINFO("receive new read or write request");
                 cacheData.readAndWriteHandler(i);
             }

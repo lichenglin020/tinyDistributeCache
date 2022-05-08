@@ -34,6 +34,8 @@ void PutGetTask::closeConnect() {
     // 输出关闭连接日志信息
     std::string loginfo = "client[" + std::to_string(clientSocketFd) + "] close connection.";
     logFile.LOGINFO(loginfo.c_str());
+    std::string tmp = "断开连接，清理epoll，删除套接字：" + std::to_string(clientSocketFd);
+    COUT(tmp.c_str());
 }
 
 /**
@@ -62,6 +64,8 @@ void PutGetTask::kvReadHandler() {
         info["data"]["flag"] = true;
     }
     std::string str = info.dump() + "\0";
+    std::string tmp = "收到了读取数据的请求,回传给客户端的数据：" + str;
+    COUT(tmp.c_str());
 
     // 将数据传回给客户端
     writeInfo(clientSocketFd, (char*)str.c_str(), str.size() + 1);
@@ -77,7 +81,8 @@ void PutGetTask::kvWriteHandler() {
     pthread_rwlock_wrlock(&rw_lock);
 
     // 测试: 使用logfile记录一些数据
-    std::cout << info << std::endl;
+    std::string tmp = "收到的写入数据的请求：" + info.dump();
+    COUT(tmp.c_str());
     std::string loginfo_count = "the count of request is: "+std::to_string(++request_count);
     logFile.LOGINFO((char *)loginfo_count.data());
 
@@ -85,7 +90,8 @@ void PutGetTask::kvWriteHandler() {
     if(info["type"] == KEY_VALUE_RESPONDBK){
         logFile.LOGINFO("receive KEY_VALUE_RESPONDBK from other cache: ");
         logFile.LOGINFO((char *)info.dump().data());
-        std::cout<<"the number of receiving backup data is "<< ++rcv_bk <<std::endl;
+        tmp = "从服务端收到的备份数据总数：" + std::to_string(++rcv_bk);
+        COUT(tmp.c_str());
         lruCacheBackon -> put(info["data"]["key"], info["data"]["value"]);
         pthread_rwlock_unlock(&rw_lock);
         return;
@@ -95,7 +101,8 @@ void PutGetTask::kvWriteHandler() {
     // Primary节点需要完成数据的更新，并且需要将相关信息通知给副本节点
     logFile.LOGINFO("receive KEY_VALUE_RESPOND from client");
     logFile.LOGINFO((char *)info.dump().data());
-    std::cout<<"the number of receiving stored data is "<<++rcv_cli<<std::endl;
+    tmp = "从客户端收到的数据总数：" + std::to_string(++rcv_cli);
+    COUT(tmp.c_str());
     lruCache -> put(info["data"]["key"], info["data"]["value"]);
 
     // 获取副本节点地址信息

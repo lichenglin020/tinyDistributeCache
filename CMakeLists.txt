@@ -31,7 +31,9 @@ add_executable(tinyDistributeCache
         cache/CacheServer.h
         cache/CacheData.cpp
         cache/CacheData.h
-        common/EpollWrap.cpp)
+        common/EpollWrap.cpp
+        common/Tools.cpp
+        common/Tools.h)
 add_executable(test_log_file
         common/LogFile.cpp
         common/LogFile.h

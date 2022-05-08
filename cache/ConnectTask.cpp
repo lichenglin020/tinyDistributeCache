@@ -22,15 +22,18 @@ void ConnectTask::accept() {
     socklen_t clientLen = sizeof(clientAddr);
     connectFd = acceptSocket(listendFd, (sockaddr*)&clientAddr, &clientLen);
 
-    std::cout << "accept from" << \
-    inet_ntop(AF_INET, &clientAddr.sin_addr, address, sizeof(address)) << \
-    " at port " << ntohs(clientAddr.sin_port) << std::endl;
-
     // 修改事件属性为非阻塞
     setNoblock(connectFd);
     // 添加
     epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLET;
     epollEvent.data.fd = connectFd;
     epollCtl(epollFd, EPOLL_CTL_ADD, connectFd, &epollEvent);
+
+    std::string tmp = "$$ 接收到新连接 $$：" +
+                      std::string(inet_ntop(AF_INET, &clientAddr.sin_addr, address, sizeof(address))) +
+                      ":" + std::to_string(ntohs(clientAddr.sin_port));
+    COUT(tmp.c_str());
+    tmp = "创建套接字并将其加入epoll红黑树：" + std::to_string(connectFd);
+    COUT(tmp.c_str());
 }
 

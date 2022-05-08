@@ -1,4 +1,5 @@
 cmake-build-alicloud
 cmake-build-debug
+cmake-build-docker
 log
 main.cpp

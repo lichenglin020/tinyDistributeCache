@@ -13,6 +13,7 @@
 #include "../common/ConsistentHash.h"
 #include "../common/LogFile.h"
 #include "../common/threadpool/ThreadPool.h"
+#include "../common/Tools.h"
 
 using json = nlohmann::json;
 
@@ -57,17 +58,6 @@ extern pthread_rwlock_t shutdown_lock;
  */
 extern json getWriteBackupJson(const std::string& key, const std::string& value);
 
-// ip地址及端口信息
-struct ipAndPort{
-    int port;
-    std::string ip;
-};
 
-/**
- * 从string中解读ip地址及端口信息
- * @param addr ip:port字符串
- * @return ipport_pair
- */
-extern ipAndPort getIpAndPort(std::string addr);
 
 #endif //TINYDISTRIBUTECACHE_CACHESERVER_H
