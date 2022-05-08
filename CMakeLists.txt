@@ -1,4 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
+
+# aliyun的g++9编译环境，如果想使用本地编译环境或者docker编译环境，需要将下面的一段注释掉
+# 注意这段命令必须放在project之前（否则会出现死循环或者不生效的问题）
+# 注意再切换编译环境后，需要清空cmake的缓存，否则可能出错
+#SET(CMAKE_CXX_COMPILER "/opt/rh/devtoolset-9/root/usr/bin/g++") # 使用SCL
+
 project(tinyDistributeCache)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -9,7 +15,13 @@ set(LIBRARIES gtest pthread) # pthread必须添加，因为gtest需要其支持
 
 # 在linux在需要使用c++11多线程会出现问题，所需要添加的支持
 # 否则会出现Enable multithreading to use std::thread: Operation not permitted错误
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++17 -pthread")
+
+# 添加一些系统设置信息
+message(STATUS "CMAKE_SYSTEM_NAME          = ${CMAKE_SYSTEM_NAME}"         )
+message(STATUS "CMAKE_CXX_COMPILER_ID      = ${CMAKE_CXX_COMPILER_ID}"     )
+message(STATUS "CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "CMAKE_COMPILER_IS_GNUCXX   = ${CMAKE_COMPILER_IS_GNUCXX}"  )
 
 add_executable(tinyDistributeCache
         common/threadpool/Task.cpp
