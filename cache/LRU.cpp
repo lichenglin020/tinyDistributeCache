@@ -23,7 +23,14 @@ LRUCache::~LRUCache() {
     delete tail;
 }
 
+/**
+ * 获取数据，当键不存在时返回空串
+ * @param key
+ * @param flag 是否更新数据的使用时间，默认是更新
+ * @return
+ */
 std::string LRUCache::get(std::string key, bool flag) {
+    std::shared_lock<std::shared_mutex> lck(sharedMutex);
     if (umap.find(key) == umap.end()) {
         return "";
     }
@@ -34,7 +41,13 @@ std::string LRUCache::get(std::string key, bool flag) {
     return node -> value;
 }
 
+/**
+ * 插入一条信息的数据
+ * @param key
+ * @param value
+ */
 void LRUCache::put(std::string key, std::string value) {
+    std::unique_lock<std::shared_mutex> lck(sharedMutex);
     if (umap.find(key) == umap.end()) {
         auto* node = new LRUNode(key, value);
         umap[key] = node;
@@ -51,6 +64,14 @@ void LRUCache::put(std::string key, std::string value) {
         node -> value = value;
         moveToHead(node);
     }
+}
+
+/**
+ * 获取缓存中的数据量
+ * @return
+ */
+int LRUCache::size() {
+    return umap.size();
 }
 
 void LRUCache::addToHead(LRUNode* node) {
@@ -74,3 +95,4 @@ LRUNode* LRUCache::removeTail() {
     removeNode(node);
     return node;
 }
+

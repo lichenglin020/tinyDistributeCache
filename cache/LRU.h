@@ -7,6 +7,11 @@
 
 #include <unordered_map>
 #include <string>
+#include <thread>
+#include <mutex>
+#include <shared_mutex>
+
+
 struct LRUNode {
     std::string key, value;
     LRUNode* pre;
@@ -21,18 +26,15 @@ public:
     virtual ~LRUCache();
 
     std::string get(std::string key, bool flag = true);
-
     void put(std::string key, std::string value);
-
-    int size(){
-        return umap.size();
-    }
+    int size();
 
 private:
     std::unordered_map<std::string, LRUNode*> umap;
     LRUNode* head;
     LRUNode* tail;
     int capacity;
+    std::shared_mutex sharedMutex; // 读写锁
 
     // 以下操作均只针对双向链表，不涉及umap操作，降低耦合
     void addToHead(LRUNode* node);
