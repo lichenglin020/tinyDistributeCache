@@ -44,7 +44,6 @@ unsigned int ConsistentHash::FNVHash(std::string key) {
  * @return
  */
 void ConsistentHash::init(const std::vector<std::string>& ips) {
-    std::unique_lock<std::shared_mutex> lck(sharedMutex);
     virtualNodesMap.clear();
     physicalNodesMap.clear();
 
