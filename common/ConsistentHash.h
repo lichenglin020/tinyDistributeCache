@@ -9,6 +9,8 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <shared_mutex>
+#include <mutex>
 
 /**
  * 一致性哈希表
@@ -34,6 +36,8 @@ private:
     std::map<unsigned int, std::string> virtualNodesMap; // 一致性哈希的虚拟节点信息
     std::map<unsigned int, std::string> physicalNodesMap; // 一致性哈希的实际物理节点
     int virtualNodesNums;   // 设置每一个实际物理节点配套的虚拟节点的个数。
+
+    std::shared_mutex sharedMutex; // 读写锁
 };
 
 

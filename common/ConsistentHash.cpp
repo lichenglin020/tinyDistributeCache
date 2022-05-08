@@ -44,6 +44,7 @@ unsigned int ConsistentHash::FNVHash(std::string key) {
  * @return
  */
 void ConsistentHash::init(const std::vector<std::string>& ips) {
+    std::unique_lock<std::shared_mutex> lck(sharedMutex);
     virtualNodesMap.clear();
     physicalNodesMap.clear();
 
@@ -58,6 +59,7 @@ void ConsistentHash::init(const std::vector<std::string>& ips) {
  * @return
  */
 void ConsistentHash::addServer(const std::string &nodeIp) {
+    std::unique_lock<std::shared_mutex> lck(sharedMutex);
     // 根据虚拟节点的个数，创建虚拟节点的映射关系
     for(int i = 0; i < virtualNodesNums; i++){
         std::string tmp = nodeIp + "#" + std::to_string(i);
@@ -74,6 +76,7 @@ void ConsistentHash::addServer(const std::string &nodeIp) {
  * @return
  */
 void ConsistentHash::deleteServer(const std::string &nodeIp) {
+    std::unique_lock<std::shared_mutex> lck(sharedMutex);
     // 删除虚拟节点的相关信息
     // 此处并没有完成相关节点信息的重新配置，会在后续的使用中处理
     for(int i = 0; i < virtualNodesNums; i++){
@@ -96,6 +99,7 @@ void ConsistentHash::deleteServer(const std::string &nodeIp) {
  * @return
  */
 std::string ConsistentHash::getServerIndex(const std::string &key) {
+    std::shared_lock<std::shared_mutex> lck(sharedMutex);
     unsigned int index = FNVHash(key);
     // 此处使用虚拟节点进行判断
     auto it = virtualNodesMap.lower_bound(index); // 向后寻找第一个大于等于index的可用的节点
@@ -117,6 +121,7 @@ std::string ConsistentHash::getServerIndex(const std::string &key) {
  * @return
  */
 std::string ConsistentHash::getNextServerIndex(const std::string &ip) {
+    std::shared_lock<std::shared_mutex> lck(sharedMutex);
     unsigned int index = FNVHash(ip);
     // 这里使用实际物理节点进行判断
     auto it = physicalNodesMap.upper_bound(index); // 向后寻找第一个大于index 的可用的节点
