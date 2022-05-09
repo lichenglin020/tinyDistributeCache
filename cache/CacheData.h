@@ -46,6 +46,8 @@ private:
 
     std::shared_ptr<ThreadPool> cacheDataThreadPool; // 缓存数据模块所需要使用到的线程池
 
+    std::mutex taskMutex; // 任务锁，在布置不同任务时需要上锁
+
 
 };
 

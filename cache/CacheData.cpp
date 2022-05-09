@@ -19,11 +19,6 @@ CacheData::CacheData(std::shared_ptr<ThreadPool> threadPool, std::shared_ptr<LRU
 }
 
 CacheData::~CacheData() {
-    pthread_mutex_unlock(&task_lock);
-    pthread_mutex_unlock(&tasklisten_lock);
-    pthread_mutex_destroy(&task_lock);
-    pthread_mutex_destroy(&tasklisten_lock);
-    pthread_rwlock_destroy(&rw_lock);
     delete[] readyEvents;
 }
 
@@ -69,9 +64,7 @@ int CacheData::wait(int microsecond = 500) {
  */
 void acceptTaskThreadFunc(void* serverAcceptStruct){
     pthread_rwlock_rdlock(&shutdown_lock);
-//    pthread_mutex_lock(&tasklisten_lock);
     ConnectTask connectTask((ServerAcceptStruct*)serverAcceptStruct);
-//    pthread_mutex_unlock(&tasklisten_lock);
     connectTask.accept();
     delete (ServerAcceptStruct*)serverAcceptStruct;
     pthread_rwlock_unlock(&shutdown_lock);
@@ -82,20 +75,22 @@ void acceptTaskThreadFunc(void* serverAcceptStruct){
  * 将具体的连接处理操作，交给线程池处理
  */
 void CacheData::acceptHandler() {
-    pthread_mutex_lock(&tasklisten_lock);
+    std::unique_lock<std::mutex> lck(taskMutex);
 //    serverAcceptStruct.clientAddr = &clientSocketAddr;
 //    serverAcceptStruct.listendFd = listenedServerSocket;
 //    serverAcceptStruct.number++;
     ServerAcceptStruct* tmp = new ServerAcceptStruct();
     tmp -> epollFd = epollFd;
     tmp -> number = serverAcceptStruct.number++;
-    tmp -> clientAddr = new sockaddr_in();
     tmp -> listendFd = listenedServerSocket;
+    tmp -> clientAddr = new sockaddr_in();
 
     Task task(acceptTaskThreadFunc, tmp);
-    logFile.LOGINFO("add accept socket to epoll tree handler to thread pool.");
     cacheDataThreadPool ->addTask(task);
-    pthread_mutex_unlock(&tasklisten_lock);
+    lck.unlock();
+
+    logFile.LOGINFO("add accept socket to epoll tree handler to thread pool.");
+
 }
 
 /**
@@ -104,9 +99,7 @@ void CacheData::acceptHandler() {
  */
 void readAndWriteTaskThreadFunc(void* serverRwStruct){
     pthread_rwlock_rdlock(&shutdown_lock);
-//    pthread_mutex_lock(&task_lock);
     PutGetTask putGetTask((ServerRWStruct *)serverRwStruct);
-//    pthread_mutex_unlock(&task_lock);
 //    while(true){
         ssize_t n = putGetTask.readFromClient();
 //        std::cout << n << std::endl;
@@ -115,11 +108,15 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
 //            break;
         }else if(n > 0){
             auto type = putGetTask.getInfoType();
-            if(type == KEY_VALUE_REQUEST) {
+            if(type == KEY_VALUE_READ) {
                 logFile.LOGINFO("receive KEY_VALUE_REQUEST from client");
                 putGetTask.kvReadHandler();
-            }else if(type == KEY_VALUE_RESPOND || type == KEY_VALUE_RESPONDBK){
-                std::string info = "receive KEY_VALUE_RESPOND or KEY_VALUE_RESPONDBK:" + std::to_string(type);
+            }else if(type == KEY_VALUE_WRITE) {
+                std::string info = "receive KEY_VALUE_RESPOND" + std::to_string(type);
+                logFile.LOGINFO(info.c_str());
+                putGetTask.kvWriteHandler();
+            }else if(type == KEY_VALUE_WRITE_BK){
+                std::string info = "receive KEY_VALUE_RESPONDBK" + std::to_string(type);
                 logFile.LOGINFO(info.c_str());
                 putGetTask.kvWriteHandler();
             }else if(type == REFLESH_MASTER){
@@ -127,6 +124,9 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
                 master_addr = putGetTask.refleshMaster();
                 pthread_mutex_unlock(&reflesh_master_lock);
             }
+//            else{
+//                break;
+//            }
         }
 //        else{
 //            break;
@@ -142,7 +142,7 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
  * 将具体的读写处理操作，交给线程池处理
  */
 void CacheData::readAndWriteHandler(int index) {
-    pthread_mutex_lock(&task_lock);
+    std::unique_lock<std::mutex> lck(taskMutex);
 //    serverRwStruct.buffer = buffer;
 //    serverRwStruct.clientSocket = readyEvents[index].data.fd;
     ServerRWStruct* tmp = new ServerRWStruct();
@@ -152,11 +152,11 @@ void CacheData::readAndWriteHandler(int index) {
     tmp -> lruCache = serverRwStruct.lruCache;
     tmp -> lruCacheBackup = serverRwStruct.lruCacheBackup;
     tmp -> clientSocket = readyEvents[index].data.fd;
-
     Task task(readAndWriteTaskThreadFunc, tmp);
-    logFile.LOGINFO("add read and write handler to thread pool.");
     cacheDataThreadPool ->addTask(task);
-    pthread_mutex_unlock(&task_lock);
+    lck.unlock();
+
+    logFile.LOGINFO("add read and write handler to thread pool.");
 }
 
 /**

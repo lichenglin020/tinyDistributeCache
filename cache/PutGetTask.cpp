@@ -43,8 +43,7 @@ void PutGetTask::closeConnect() {
  * @return
  */
 int PutGetTask::getInfoType() {
-    if(json::accept(buffer)){
-        info = json::parse(buffer);
+    if(HttpJson::getRequestJson(info, buffer)){
         return (int)info["type"];
     }else{
         return -1;
@@ -56,20 +55,14 @@ int PutGetTask::getInfoType() {
  * 尚未完成：读取数据的时候也需要同步副本
  */
 void PutGetTask::kvReadHandler() {
-    pthread_rwlock_rdlock(&rw_lock);
-    info["data"]["value"] = lruCache -> get(info["data"]["key"], false);
-    if(info["data"]["value"] == ""){
-        info["data"]["flag"] = false;
-    }else{
-        info["data"]["flag"] = true;
-    }
-    std::string str = info.dump() + "\0";
+    std::string value = lruCache -> get(info["data"]["key"], false);
+    json respondClient = HttpJson::respondClientJson(info["data"]["key"], value);
+    std::string str = respondClient.dump() + "\0";
     std::string tmp = "收到了读取数据的请求,回传给客户端的数据：" + str;
     COUT(tmp.c_str());
 
     // 将数据传回给客户端
     writeInfo(clientSocketFd, (char*)str.c_str(), str.size() + 1);
-    pthread_rwlock_unlock(&rw_lock);
 }
 
 /**
@@ -78,8 +71,6 @@ void PutGetTask::kvReadHandler() {
  * 如果是KEY_VALUE_RESPOND，则表明是client请求的Primary节点，Primary节点需要完成数据的更新，并且需要将相关信息通知给副本节点
  */
 void PutGetTask::kvWriteHandler() {
-    pthread_rwlock_wrlock(&rw_lock);
-
     // 测试: 使用logfile记录一些数据
     std::string tmp = "收到的写入数据的请求：" + info.dump();
     COUT(tmp.c_str());
@@ -87,13 +78,12 @@ void PutGetTask::kvWriteHandler() {
     logFile.LOGINFO((char *)loginfo_count.data());
 
     // 如果收到的信息是KEY_VALUE_RESPONDBK，则表明是Primary节点发送而来的同步数据
-    if(info["type"] == KEY_VALUE_RESPONDBK){
+    if(info["type"] == KEY_VALUE_WRITE_BK){
         logFile.LOGINFO("receive KEY_VALUE_RESPONDBK from other cache: ");
         logFile.LOGINFO((char *)info.dump().data());
         tmp = "从服务端收到的备份数据总数：" + std::to_string(++rcv_bk);
         COUT(tmp.c_str());
         lruCacheBackon -> put(info["data"]["key"], info["data"]["value"]);
-        pthread_rwlock_unlock(&rw_lock);
         return;
     }
 
@@ -123,7 +113,7 @@ void PutGetTask::kvWriteHandler() {
         int n = connectSocket(backUpSocket, (sockaddr*)&backUpSocketAddr, sizeof(backUpSocketAddr));
         if(n >= 0){
             setNoblock(backUpSocket);
-            json backupJson = getWriteBackupJson(
+            json backupJson = HttpJson::writeBackupJson(
                     (const std::string)info["data"]["key"],
                     (const std::string)info["data"]["value"]);
             std::string backupStr = backupJson.dump() + "\0";
@@ -132,8 +122,6 @@ void PutGetTask::kvWriteHandler() {
 
         close(backUpSocket);
     }
-
-    pthread_rwlock_unlock(&rw_lock);
 }
 
 /**
