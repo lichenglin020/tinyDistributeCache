@@ -168,3 +168,29 @@ bool CacheData::isListenedFd(int socket) {
     return readyEvents[socket].data.fd == listenedServerSocket;
 }
 
+/**
+ * 启动并运行Cache服务
+ */
+void CacheData::run() {
+    listen();
+    for(;;){
+        int nready = wait(500);
+        if(nready <= 0){
+            continue;
+        }
+
+        pthread_rwlock_rdlock(&shutdown_lock);
+        for(int i = 0; i < nready; i++){
+            if(isListenedFd(i)){
+                logFile.LOGINFO("receive new connect");
+                acceptHandler();
+            }else{
+                logFile.LOGINFO("receive new read or write request");
+                readAndWriteHandler(i);
+            }
+
+        }
+        pthread_rwlock_unlock(&shutdown_lock);
+    }
+}
+

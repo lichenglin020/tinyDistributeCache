@@ -20,6 +20,10 @@ public:
               std::shared_ptr<ConsistentHash> keyAddrs);
 
     virtual ~CacheData();
+    void run();
+
+private:
+
     void listen();              // 创建绑定并监听套接字，并加入到epoll内核红黑树中
     int wait(int microsecond);  // 监听内核epoll响应
 
@@ -28,8 +32,6 @@ public:
 
     bool isListenedFd(int socket);
 
-
-private:
 //    sockaddr_in clientSocketAddr; // 客户端连接时所创建的地址信息
     sockaddr_in serverSocketAddr; // 服务端的相关的地址配置信息
     int listenedServerSocket;   // 需要监听的套接字

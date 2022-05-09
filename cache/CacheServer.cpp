@@ -35,40 +35,12 @@ int main(){
     auto LC = std::make_shared<LRUCache>(100);
     auto LC_BK = std::make_shared<LRUCache>(100);
     auto ThrPl = std::make_shared<ThreadPool>(10,20);
-//    pthread_t tid_heartbeat;
-//    struct heartbeat_struct heartbeat_arg;
-//    heartbeat_arg.ThrPl = ThrPl;
-//    heartbeat_arg.LC = LC;
-//    heartbeat_arg.LC_BK = LC_BK;
-//    heartbeat_arg.key_addr = key_addr;
-//    heartbeat_arg.ipport_list = ipport_list;
-//    Pthread_create(&tid_heartbeat, nullptr, heart_beat, &heartbeat_arg);
 
-    //receive as server
     CacheData cacheData(ThrPl, LC, LC_BK, key_addr);
-    cacheData.listen();
-    logFile.LOGINFO("the cache server is running.");
+    logFile.LOGINFO("run the cache server.");
     logFile.LOGINFO(curen_addr.c_str());
     COUT("服务启动");
+    cacheData.run();
 
-    for(;;){
-        int nready = cacheData.wait(500);
-        if(nready <= 0){
-            continue;
-        }
-
-        pthread_rwlock_rdlock(&shutdown_lock);
-        for(int i = 0; i < nready; i++){
-            if(cacheData.isListenedFd(i)){
-                logFile.LOGINFO("receive new connect");
-                cacheData.acceptHandler();
-            }else{
-                logFile.LOGINFO("receive new read or write request");
-                cacheData.readAndWriteHandler(i);
-            }
-
-        }
-        pthread_rwlock_unlock(&shutdown_lock);
-    }
     return 0;
 }
