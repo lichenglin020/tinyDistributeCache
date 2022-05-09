@@ -4,12 +4,17 @@
 
 #include "CacheData.h"
 
-CacheData::CacheData(std::shared_ptr<ThreadPool> threadPool, std::shared_ptr<LRUCache> lruCache,
-                     std::shared_ptr<LRUCache> lruCacheBackup, std::shared_ptr<ConsistentHash> keyAddrs):
+CacheData::CacheData(std::shared_ptr<ThreadPool> threadPool,
+                     std::shared_ptr<LRUCache> lruCache,
+                     std::shared_ptr<LRUCache> lruCacheBackup,
+                     std::shared_ptr<ConsistentHash> keyAddrs,
+                     int _listenNum,
+                     int _epollFdSize,
+                     int _readyEventsNum):
                      cacheDataThreadPool(threadPool),
-                     listenNum(20),
-                     epollFdSize(256),
-                     readyEventsNum(128){
+                     listenNum(_listenNum),
+                     epollFdSize(_epollFdSize),
+                     readyEventsNum(_readyEventsNum){
 
 //    this -> cacheDataThreadPool = threadPool;
     readyEvents = new epoll_event[readyEventsNum];

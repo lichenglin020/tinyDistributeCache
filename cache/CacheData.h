@@ -17,7 +17,10 @@ public:
     CacheData(std::shared_ptr<ThreadPool> threadPool,
               std::shared_ptr<LRUCache> lruCache,
               std::shared_ptr<LRUCache> lruCacheBackup,
-              std::shared_ptr<ConsistentHash> keyAddrs);
+              std::shared_ptr<ConsistentHash> keyAddrs,
+              int _listenNum = 20,
+              int _epollFdSize = 256,
+              int _readyEventsNum = 128);
 
     virtual ~CacheData();
     void run();
