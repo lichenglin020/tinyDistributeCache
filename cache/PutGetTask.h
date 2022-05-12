@@ -43,8 +43,6 @@ public:
 
     void setClientSocketFd(int clientSocketFd);
 
-    const char *getBuffer() const;
-
     int getEpollFd() const;
 
     void setEpollFd(int epollFd);
@@ -53,9 +51,10 @@ private:
     std::shared_ptr<LRUCache> lruCache;
     std::shared_ptr<LRUCache> lruCacheBackon;
     std::shared_ptr<ConsistentHash> keyAddrs;
-    int clientSocketFd;
-    char buffer[BUFSIZ]; //stdio.h 8192
     int epollFd;
+    int clientSocketFd;
+
+    char buffer[BUFSIZ]; //stdio.h 8192
     json info;
 };
 

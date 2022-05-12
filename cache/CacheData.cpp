@@ -48,7 +48,6 @@ void CacheData::listen() {
     epollEvent.events = EPOLLIN | EPOLLET;
     epollEvent.data.fd = listenedServerSocket;
     epollCtl(epollFd, EPOLL_CTL_ADD, listenedServerSocket, &epollEvent);
-    serverAcceptStruct.epollFd = epollFd;
 }
 
 /**
@@ -65,11 +64,11 @@ int CacheData::wait(int microsecond = 500) {
  * epoll响应客户端连接套接字是的线程操作函数
  * @param serverAcceptStruct
  */
-void acceptTaskThreadFunc(void* serverAcceptStruct){
+void acceptTaskThreadFunc(void* _connectTask){
     pthread_rwlock_rdlock(&shutdown_lock);
-    ConnectTask connectTask((ServerAcceptStruct*)serverAcceptStruct);
-    connectTask.accept();
-    delete (ServerAcceptStruct*)serverAcceptStruct;
+    ConnectTask* connectTask = (ConnectTask*)_connectTask;
+    connectTask -> accept();
+    delete connectTask;
     pthread_rwlock_unlock(&shutdown_lock);
 }
 
@@ -79,16 +78,12 @@ void acceptTaskThreadFunc(void* serverAcceptStruct){
  */
 void CacheData::acceptHandler() {
     std::unique_lock<std::mutex> lck(taskMutex);
-//    serverAcceptStruct.clientAddr = &clientSocketAddr;
-//    serverAcceptStruct.listendFd = listenedServerSocket;
-//    serverAcceptStruct.number++;
-    ServerAcceptStruct* tmp = new ServerAcceptStruct();
-    tmp -> epollFd = epollFd;
-    tmp -> number = serverAcceptStruct.number++;
-    tmp -> listendFd = listenedServerSocket;
-    tmp -> clientAddr = new sockaddr_in();
 
-    Task task(acceptTaskThreadFunc, tmp);
+    ConnectTask* connectTask = new ConnectTask();
+    connectTask->setEpollFd(epollFd);
+    connectTask->setListendFd(listenedServerSocket);
+
+    Task task(acceptTaskThreadFunc, connectTask);
     cacheDataThreadPool ->addTask(task);
     lck.unlock();
 
@@ -100,9 +95,9 @@ void CacheData::acceptHandler() {
  * epoll响应客户端读写请求的线程操作函数
  * @param serverRwStruct
  */
-void readAndWriteTaskThreadFunc(void* serverRwStruct){
+void readAndWriteTaskThreadFunc(void* _putGetTask){
     pthread_rwlock_rdlock(&shutdown_lock);
-    PutGetTask* putGetTask = static_cast<PutGetTask*>(serverRwStruct);
+    PutGetTask* putGetTask = static_cast<PutGetTask*>(_putGetTask);
 //    while(true){
         ssize_t n = putGetTask -> readFromClient();
         if(n == 0){

@@ -161,10 +161,6 @@ void PutGetTask::setClientSocketFd(int clientSocketFd) {
     PutGetTask::clientSocketFd = clientSocketFd;
 }
 
-const char *PutGetTask::getBuffer() const {
-    return buffer;
-}
-
 int PutGetTask::getEpollFd() const {
     return epollFd;
 }

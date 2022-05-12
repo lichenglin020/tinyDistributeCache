@@ -35,7 +35,6 @@ private:
 
     bool isListenedFd(int socket);
 
-//    sockaddr_in clientSocketAddr; // 客户端连接时所创建的地址信息
     sockaddr_in serverSocketAddr; // 服务端的相关的地址配置信息
     int listenedServerSocket;   // 需要监听的套接字
     int listenNum;  // listen时，请求队列的长度设置
@@ -45,13 +44,10 @@ private:
     int readyEventsNum;
     epoll_event *readyEvents;
 
-//    ServerRWStruct serverRwStruct;             // epoll监听，触发读写事件时需要使用的数据
-    ServerAcceptStruct serverAcceptStruct;     // epoll监听，触发连接事件时需要使用的数据
-
     std::shared_ptr<ThreadPool> cacheDataThreadPool; // 缓存数据模块所需要使用到的线程池
-    std::shared_ptr<LRUCache> lruCache;
-    std::shared_ptr<LRUCache> lruCacheBackup;
-    std::shared_ptr<ConsistentHash> keyAddrs;
+    std::shared_ptr<LRUCache> lruCache;              // lru缓存
+    std::shared_ptr<LRUCache> lruCacheBackup;        // 前一节点的lru备份缓存
+    std::shared_ptr<ConsistentHash> keyAddrs;        // 一致性哈希表
 
     std::mutex taskMutex; // 任务锁，在布置不同任务时需要上锁
 
