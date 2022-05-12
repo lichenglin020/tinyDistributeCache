@@ -7,37 +7,47 @@
 #include "CacheServer.h"
 
 /**
- * 当前节点作为服务端，epoll监听读写操作,所需要用到的配置信息。
- * 作为服务端，需要响应客户端或者来自其他服务端的请求。
- */
-struct ServerRWStruct{
-    int clientSocket;
-    int epollFd;
-    char* buffer;
-    std::shared_ptr<LRUCache> lruCache;
-    std::shared_ptr<LRUCache> lruCacheBackup;
-    std::shared_ptr<ConsistentHash> keyAddrs;
-
-    ~ServerRWStruct(){
-        delete[] buffer;
-    }
-};
-
-/**
  * 读取或者写入数据时的具体任务处理类
  */
 class PutGetTask {
 public:
-    PutGetTask(ServerRWStruct* serverRWStruct);
+    PutGetTask();
+
     virtual ~PutGetTask();
 
     ssize_t readFromClient();
+
     void closeConnect();
+
     int getInfoType();
-    //
+
     void kvReadHandler();
+
     void kvWriteHandler();
+
     std::string refleshMaster();
+
+    const std::shared_ptr<LRUCache> &getLruCache() const;
+
+    void setLruCache(const std::shared_ptr<LRUCache> &lruCache);
+
+    const std::shared_ptr<LRUCache> &getLruCacheBackon() const;
+
+    void setLruCacheBackon(const std::shared_ptr<LRUCache> &lruCacheBackon);
+
+    const std::shared_ptr<ConsistentHash> &getKeyAddrs() const;
+
+    void setKeyAddrs(const std::shared_ptr<ConsistentHash> &keyAddrs);
+
+    int getClientSocketFd() const;
+
+    void setClientSocketFd(int clientSocketFd);
+
+    const char *getBuffer() const;
+
+    int getEpollFd() const;
+
+    void setEpollFd(int epollFd);
 
 private:
     std::shared_ptr<LRUCache> lruCache;

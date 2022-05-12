@@ -4,23 +4,22 @@
 
 #include "CacheData.h"
 
-CacheData::CacheData(std::shared_ptr<ThreadPool> threadPool,
-                     std::shared_ptr<LRUCache> lruCache,
-                     std::shared_ptr<LRUCache> lruCacheBackup,
-                     std::shared_ptr<ConsistentHash> keyAddrs,
+CacheData::CacheData(std::shared_ptr<ThreadPool> _threadPool,
+                     std::shared_ptr<LRUCache> _lruCache,
+                     std::shared_ptr<LRUCache> _lruCacheBackup,
+                     std::shared_ptr<ConsistentHash> _keyAddrs,
                      int _listenNum,
                      int _epollFdSize,
                      int _readyEventsNum):
-                     cacheDataThreadPool(threadPool),
+                     cacheDataThreadPool(_threadPool),
+                     lruCache(_lruCache),
+                     lruCacheBackup(_lruCacheBackup),
+                     keyAddrs(_keyAddrs),
                      listenNum(_listenNum),
                      epollFdSize(_epollFdSize),
                      readyEventsNum(_readyEventsNum){
 
-//    this -> cacheDataThreadPool = threadPool;
     readyEvents = new epoll_event[readyEventsNum];
-    serverRwStruct.lruCache = lruCache;
-    serverRwStruct.lruCacheBackup = lruCacheBackup;
-    serverRwStruct.keyAddrs = keyAddrs;
 }
 
 CacheData::~CacheData() {
@@ -49,7 +48,6 @@ void CacheData::listen() {
     epollEvent.events = EPOLLIN | EPOLLET;
     epollEvent.data.fd = listenedServerSocket;
     epollCtl(epollFd, EPOLL_CTL_ADD, listenedServerSocket, &epollEvent);
-    serverRwStruct.epollFd = epollFd;
     serverAcceptStruct.epollFd = epollFd;
 }
 
@@ -104,29 +102,28 @@ void CacheData::acceptHandler() {
  */
 void readAndWriteTaskThreadFunc(void* serverRwStruct){
     pthread_rwlock_rdlock(&shutdown_lock);
-    PutGetTask putGetTask((ServerRWStruct *)serverRwStruct);
+    PutGetTask* putGetTask = static_cast<PutGetTask*>(serverRwStruct);
 //    while(true){
-        ssize_t n = putGetTask.readFromClient();
-//        std::cout << n << std::endl;
+        ssize_t n = putGetTask -> readFromClient();
         if(n == 0){
-            putGetTask.closeConnect();
+            putGetTask -> closeConnect();
 //            break;
         }else if(n > 0){
-            auto type = putGetTask.getInfoType();
+            auto type = putGetTask -> getInfoType();
             if(type == KEY_VALUE_READ) {
                 logFile.LOGINFO("receive KEY_VALUE_REQUEST from client");
-                putGetTask.kvReadHandler();
+                putGetTask -> kvReadHandler();
             }else if(type == KEY_VALUE_WRITE) {
                 std::string info = "receive KEY_VALUE_RESPOND" + std::to_string(type);
                 logFile.LOGINFO(info.c_str());
-                putGetTask.kvWriteHandler();
+                putGetTask -> kvWriteHandler();
             }else if(type == KEY_VALUE_WRITE_BK){
                 std::string info = "receive KEY_VALUE_RESPONDBK" + std::to_string(type);
                 logFile.LOGINFO(info.c_str());
-                putGetTask.kvWriteHandler();
+                putGetTask -> kvWriteHandler();
             }else if(type == REFLESH_MASTER){
                 pthread_mutex_lock(&reflesh_master_lock);
-                master_addr = putGetTask.refleshMaster();
+                master_addr = putGetTask -> refleshMaster();
                 pthread_mutex_unlock(&reflesh_master_lock);
             }
 //            else{
@@ -137,8 +134,7 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
 //            break;
 //        }
 //    }
-
-    delete (ServerRWStruct *)serverRwStruct;
+    delete putGetTask;
     pthread_rwlock_unlock(&shutdown_lock);
 }
 
@@ -148,16 +144,15 @@ void readAndWriteTaskThreadFunc(void* serverRwStruct){
  */
 void CacheData::readAndWriteHandler(int index) {
     std::unique_lock<std::mutex> lck(taskMutex);
-//    serverRwStruct.buffer = buffer;
-//    serverRwStruct.clientSocket = readyEvents[index].data.fd;
-    ServerRWStruct* tmp = new ServerRWStruct();
-    tmp -> buffer = new char[BUFSIZ];
-    tmp -> epollFd = epollFd;
-    tmp -> keyAddrs = serverRwStruct.keyAddrs;
-    tmp -> lruCache = serverRwStruct.lruCache;
-    tmp -> lruCacheBackup = serverRwStruct.lruCacheBackup;
-    tmp -> clientSocket = readyEvents[index].data.fd;
-    Task task(readAndWriteTaskThreadFunc, tmp);
+
+    PutGetTask* putGetTaskArg = new PutGetTask();
+    putGetTaskArg ->setEpollFd(epollFd);
+    putGetTaskArg ->setKeyAddrs(keyAddrs);
+    putGetTaskArg ->setClientSocketFd(readyEvents[index].data.fd);
+    putGetTaskArg ->setLruCache(lruCache);
+    putGetTaskArg ->setLruCacheBackon(lruCacheBackup);
+
+    Task task(readAndWriteTaskThreadFunc, putGetTaskArg);
     cacheDataThreadPool ->addTask(task);
     lck.unlock();
 

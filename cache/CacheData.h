@@ -44,12 +44,14 @@ private:
     epoll_event epollEvent; // epoll事件
     int readyEventsNum;
     epoll_event *readyEvents;
-    char buffer[BUFSIZ];
 
-    ServerRWStruct serverRwStruct;             // epoll监听，触发读写事件时需要使用的数据
+//    ServerRWStruct serverRwStruct;             // epoll监听，触发读写事件时需要使用的数据
     ServerAcceptStruct serverAcceptStruct;     // epoll监听，触发连接事件时需要使用的数据
 
     std::shared_ptr<ThreadPool> cacheDataThreadPool; // 缓存数据模块所需要使用到的线程池
+    std::shared_ptr<LRUCache> lruCache;
+    std::shared_ptr<LRUCache> lruCacheBackup;
+    std::shared_ptr<ConsistentHash> keyAddrs;
 
     std::mutex taskMutex; // 任务锁，在布置不同任务时需要上锁
 
