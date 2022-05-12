@@ -4,13 +4,6 @@
 
 #include "ConnectTask.h"
 
-//ConnectTask::ConnectTask(ServerAcceptStruct *serverAcceptStruct) {
-//    clientAddr = *(serverAcceptStruct -> clientAddr);
-//    listendFd = serverAcceptStruct -> listendFd;
-//    number = serverAcceptStruct -> number;
-//    epollFd = serverAcceptStruct -> epollFd;
-//}
-
 ConnectTask::ConnectTask() {
 
 }

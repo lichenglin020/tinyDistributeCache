@@ -17,7 +17,7 @@ set(LIBRARIES gtest pthread) # pthread必须添加，因为gtest需要其支持
 # 否则会出现Enable multithreading to use std::thread: Operation not permitted错误
 SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++17 -pthread")
 
-# 添加一些系统设置信息
+# 显示输出一些系统设置信息
 message(STATUS "CMAKE_SYSTEM_NAME          = ${CMAKE_SYSTEM_NAME}"         )
 message(STATUS "CMAKE_CXX_COMPILER_ID      = ${CMAKE_CXX_COMPILER_ID}"     )
 message(STATUS "CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
@@ -45,7 +45,11 @@ add_executable(tinyDistributeCache
         cache/CacheData.h
         common/EpollWrap.cpp
         common/Tools.cpp
-        common/Tools.h cache/HttpJson.cpp cache/HttpJson.h)
+        common/Tools.h
+        cache/HttpJson.cpp
+        cache/HttpJson.h
+        cache/heartbeats/Heartbeat.cpp
+        cache/heartbeats/Heartbeat.h)
 add_executable(test_log_file
         common/LogFile.cpp
         common/LogFile.h

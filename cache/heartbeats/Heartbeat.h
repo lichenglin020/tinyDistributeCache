@@ -6,11 +6,9 @@
 #define TINYDISTRIBUTECACHE_HEARTBEAT_H
 
 
-
-class HeartBeat {
+class Heartbeat {
 
 };
-
 
 
 #endif //TINYDISTRIBUTECACHE_HEARTBEAT_H

@@ -13,7 +13,7 @@
  */
 class ConnectTask {
 public:
-//    ConnectTask(ServerAcceptStruct * serverAcceptStruct);
+
     ConnectTask();
 
     virtual ~ConnectTask();
