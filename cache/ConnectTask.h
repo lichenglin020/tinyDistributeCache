@@ -20,11 +20,7 @@ public:
 
     void accept();
 
-    int getListendFd() const;
-
     void setListendFd(int listendFd);
-
-    int getEpollFd() const;
 
     void setEpollFd(int epollFd);
 

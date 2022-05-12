@@ -129,40 +129,20 @@ std::string PutGetTask::refleshMaster() {
 }
 
 
-const std::shared_ptr<LRUCache> &PutGetTask::getLruCache() const {
-    return lruCache;
-}
-
 void PutGetTask::setLruCache(const std::shared_ptr<LRUCache> &lruCache) {
     PutGetTask::lruCache = lruCache;
-}
-
-const std::shared_ptr<LRUCache> &PutGetTask::getLruCacheBackon() const {
-    return lruCacheBackon;
 }
 
 void PutGetTask::setLruCacheBackon(const std::shared_ptr<LRUCache> &lruCacheBackon) {
     PutGetTask::lruCacheBackon = lruCacheBackon;
 }
 
-const std::shared_ptr<ConsistentHash> &PutGetTask::getKeyAddrs() const {
-    return keyAddrs;
-}
-
 void PutGetTask::setKeyAddrs(const std::shared_ptr<ConsistentHash> &keyAddrs) {
     PutGetTask::keyAddrs = keyAddrs;
 }
 
-int PutGetTask::getClientSocketFd() const {
-    return clientSocketFd;
-}
-
 void PutGetTask::setClientSocketFd(int clientSocketFd) {
     PutGetTask::clientSocketFd = clientSocketFd;
-}
-
-int PutGetTask::getEpollFd() const {
-    return epollFd;
 }
 
 void PutGetTask::setEpollFd(int epollFd) {

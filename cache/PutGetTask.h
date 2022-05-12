@@ -27,23 +27,13 @@ public:
 
     std::string refleshMaster();
 
-    const std::shared_ptr<LRUCache> &getLruCache() const;
-
     void setLruCache(const std::shared_ptr<LRUCache> &lruCache);
-
-    const std::shared_ptr<LRUCache> &getLruCacheBackon() const;
 
     void setLruCacheBackon(const std::shared_ptr<LRUCache> &lruCacheBackon);
 
-    const std::shared_ptr<ConsistentHash> &getKeyAddrs() const;
-
     void setKeyAddrs(const std::shared_ptr<ConsistentHash> &keyAddrs);
 
-    int getClientSocketFd() const;
-
     void setClientSocketFd(int clientSocketFd);
-
-    int getEpollFd() const;
 
     void setEpollFd(int epollFd);
 

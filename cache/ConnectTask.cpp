@@ -44,16 +44,8 @@ void ConnectTask::accept() {
     COUT(tmp.c_str());
 }
 
-int ConnectTask::getListendFd() const {
-    return listendFd;
-}
-
 void ConnectTask::setListendFd(int listendFd) {
     ConnectTask::listendFd = listendFd;
-}
-
-int ConnectTask::getEpollFd() const {
-    return epollFd;
 }
 
 void ConnectTask::setEpollFd(int epollFd) {
