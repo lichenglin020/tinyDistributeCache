@@ -17,7 +17,8 @@ PutGetTask::~PutGetTask() {
  * @return
  */
 ssize_t PutGetTask::readFromClient() {
-    ssize_t n = readInfo(clientSocketFd, buffer, BUFSIZ);
+//    ssize_t n = readInfo(clientSocketFd, buffer, BUFSIZ);
+    ssize_t n = readAllInfo(clientSocketFd, buffer, BUFSIZ);
     return n;
 }
 

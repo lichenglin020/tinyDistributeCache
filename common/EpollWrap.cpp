@@ -133,7 +133,10 @@ ssize_t readAllInfo(int clientFd, char* buffer, int size){
                 }
             }
         }
-    } while (n > 0 || errno == EINTR);
+        if(errno == EAGAIN){
+            selectSleep(10); // 等待缓冲区准备就绪
+        }
+    } while ((n > 0 || errno == EINTR || errno == EAGAIN) && !isEnd);
     if(resultn == 0) return n;
     for(int i = 0; i < result.size(); i++){
         buffer[i] = result[i];

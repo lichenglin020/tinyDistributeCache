@@ -51,3 +51,17 @@ json HttpJson::respondClientJson(const std::string &key, const std::string &valu
     return respondClientJson;
 }
 
+/**
+ * 构建心跳包Json数据格式
+ * @param _ip
+ * @return
+ */
+json HttpJson::heartbeatJson(const std::string& _ip){
+    json data, heartbeat_json;
+    heartbeat_json["type"] = HEART_BEAT;
+    data["ip"] = _ip;
+    data["state"] = true;
+    heartbeat_json["data"] = data;
+    return heartbeat_json;
+}
+
