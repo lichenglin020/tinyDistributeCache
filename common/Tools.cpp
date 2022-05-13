@@ -6,7 +6,6 @@
 
 
 static std::mutex cout_mtx;
-static std::mutex time_mtx;
 
 /**
  * 线程安全的输出内容到控制台
@@ -29,7 +28,6 @@ void safeThreadCout(std::string filePath, std::string funcName, int line, const 
  * @return
  */
 std::string getTimeCrude(){
-    std::lock_guard<std::mutex> lck(time_mtx);
     time_t curtime = time(0);
     tm* nowtime = localtime(&curtime);
     std::string result = std::to_string(nowtime ->tm_hour) + ":" +

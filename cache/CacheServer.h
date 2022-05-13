@@ -33,10 +33,8 @@ extern std::atomic<long long> request_count;
 extern std::atomic<long long> rcv_cli;
 extern std::atomic<long long> rcv_bk;
 
-// 读写记录所需要使用到的锁
-// Client对Cache Server服务器进行写数据时，需要加写锁；进行读数据时，需要加读锁。
-extern pthread_mutex_t transfertooth;
 
+extern pthread_mutex_t transfertooth;
 extern pthread_mutex_t reflesh_master_lock;
 extern pthread_rwlock_t shutdown_lock;
 
